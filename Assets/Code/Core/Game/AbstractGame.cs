@@ -1,6 +1,8 @@
 ﻿using System;
 using Miniclip.Core.Config;
+using Miniclip.Scoring;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Miniclip.Core
 {
@@ -9,6 +11,7 @@ namespace Miniclip.Core
         public event Action RoundTimerElapsedEvent;
 
         protected float TimeLeft => _timerStartTimeStamp + GameConfig.SecondsPerRound - Time.time;
+
         protected bool IsPlaying => _isPlaying;
 
         protected T GameConfig;
@@ -17,8 +20,16 @@ namespace Miniclip.Core
         private int _timerStartTimeStamp;
         private bool _isPlaying;
 
-        public abstract void Init(PrefabFactory prefabFactory);
+        public abstract SystemBindings GetSystemBindings();
+
+        public abstract void Init(IPrefabFactory prefabFactory);
+
         public abstract void SetVisible(bool visible);
+
+        public void Destroy()
+        {
+            Object.Destroy(gameObject);
+        }
 
         public void SetConfig(GameConfig gameConfig)
         {
@@ -52,6 +63,7 @@ namespace Miniclip.Core
         }
 
         protected abstract void OnStart();
+
         protected abstract void OnStop();
     }
 }

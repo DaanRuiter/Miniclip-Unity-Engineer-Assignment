@@ -12,13 +12,13 @@ namespace Miniclip.WackAMole.Game
         [SerializeField] private Transform _holeContainer;
         [SerializeField] private Vector2 _holeOffset = new(0.25f, 0.25f);
 
-        private PrefabFactory _prefabFactory;
+        private IPrefabFactory _prefabFactory;
         private List<MoleHole> _moleHoles;
 
         private int _minShowDuration;
         private int _maxShowDuration;
 
-        public void Init(PrefabFactory prefabFactory)
+        public void Init(IPrefabFactory prefabFactory)
         {
             _prefabFactory = prefabFactory;
             _moleHoles = new List<MoleHole>();

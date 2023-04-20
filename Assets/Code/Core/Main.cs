@@ -1,6 +1,4 @@
-﻿using System;
-using Miniclip.UI.Screens;
-using Miniclip.WackAMole;
+﻿using Miniclip.UI.Screens;
 using UnityEngine;
 
 namespace Miniclip.Core
@@ -14,8 +12,10 @@ namespace Miniclip.Core
         [SerializeField] private RectTransform _UIContainer;
 
         private IGame _game;
-        private GameStateService _gameStateService;
         private MainMenuPresenter _mainMenu;
+        private GameOverPresenter _gameOverScreen;
+        private LeaderboardPresenter _leaderboard;
+        private SystemBindings _systemBindings;
 
         private void Awake()
         {
@@ -29,7 +29,12 @@ namespace Miniclip.Core
 
         private void Start()
         {
-            _gameStateService.SetGameState(GameState.Menu);
+            _systemBindings.GameStateService.SetGameState(GameState.Menu);
+        }
+
+        private void OnDestroy()
+        {
+            Dispose();
         }
 
         /// <summary>
@@ -39,28 +44,60 @@ namespace Miniclip.Core
         /// <param name="game">Intended game to initialize</param>
         private void Init(IGame game)
         {
-            //todo?: use some kind of installer / context for services
+            _systemBindings.PrefabFactory.SetDefaultParents(_gameContainer, _UIContainer);
+            _systemBindings.GameStateService.State.ValueUpdatedEvent += OnGameStateSwitched;
 
-            var gameScoreService = new GameScoreService();
-            _gameStateService = new GameStateService(game, gameScoreService);
-            _gameStateService.State.ValueUpdatedEvent += OnGameStateSwitched;
+            // Spawn main menu
+            _mainMenu = _systemBindings.PrefabFactory.SpawnUIPresenter<MainMenuPresenter, MainMenuView>("UI/MainMenu");
+            _mainMenu.Init(_systemBindings.GameStateService);
 
-            var prefabFactory = new PrefabFactory(_gameContainer, _UIContainer);
+            _gameOverScreen =
+                _systemBindings.PrefabFactory.SpawnUIPresenter<GameOverPresenter, GameOverView>("UI/GameOver");
+            _gameOverScreen.ClosedEvent += OnScoreSubmitted;
 
-            _mainMenu = prefabFactory.SpawnUIPrefab<MainMenuPresenter, MainMenuView>("UI/MainMenu");
-            _mainMenu.Init(_gameStateService);
+            // Spawn leaderboard
+            _leaderboard =
+                _systemBindings.PrefabFactory.SpawnUIPresenter<LeaderboardPresenter, LeaderboardView>("UI/Leaderboard");
+            _leaderboard.Close();
+            _leaderboard.ClosedEvent += OnLeaderboardClosed;
 
+            // Spawn game
             _game = game;
-            _game.SetConfig(new WackAMoleGameConfig());
-            _game.Init(prefabFactory);
+            _game.SetConfig(_systemBindings.GameConfig);
+            _game.Init(_systemBindings.PrefabFactory);
+            _game.RoundTimerElapsedEvent += OnGameRoundTimerElapsed;
+        }
+
+        private void Dispose()
+        {
+            _mainMenu.Destroy();
+            _leaderboard.Destroy();
+            _game.Destroy();
         }
 
         private void OnGameStateSwitched(GameState state)
         {
             _mainMenu.SetVisible(state == GameState.Menu);
             _game.SetVisible(state == GameState.Game);
+            _leaderboard.SetVisible(state == GameState.Leaderboard);
+            _gameOverScreen.SetVisible(state == GameState.GameOver);
 
             Debug.Log($"Switched game state to {state}");
+        }
+
+        private void OnGameRoundTimerElapsed()
+        {
+            _systemBindings.GameStateService.SetGameState(GameState.GameOver);
+        }
+
+        private void OnLeaderboardClosed()
+        {
+            _systemBindings.GameStateService.SetGameState(GameState.Menu);
+        }
+
+        private void OnScoreSubmitted()
+        {
+            _systemBindings.GameStateService.SetGameState(GameState.Leaderboard);
         }
     }
 }

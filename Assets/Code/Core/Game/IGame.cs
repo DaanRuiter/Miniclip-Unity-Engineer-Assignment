@@ -1,11 +1,19 @@
-﻿using Miniclip.Core.Config;
+﻿using System;
+using Miniclip.Core.Config;
+using Miniclip.Scoring;
 
 namespace Miniclip.Core
 {
     public interface IGame : IPresenter
     {
-        void Init(PrefabFactory prefabFactory);
+        event Action RoundTimerElapsedEvent;
+
+        SystemBindings GetSystemBindings();
+
+        void Init(IPrefabFactory prefabFactory);
+
         void SetConfig(GameConfig gameConfig);
+
         void StartGame(GameScoreHandle scoreHandle);
     }
 }

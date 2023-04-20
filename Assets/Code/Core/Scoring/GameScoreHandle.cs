@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Miniclip.Core
+namespace Miniclip.Scoring
 {
     public class GameScoreHandle
     {

@@ -1,4 +1,5 @@
 ﻿using Miniclip.Core;
+using Miniclip.Scoring;
 using Miniclip.WackAMole.Game;
 using Miniclip.WackAMole.UI;
 using UnityEngine;
@@ -9,17 +10,30 @@ namespace Miniclip.WackAMole
     {
         private WackAMoleGameField _gameField;
         private WackAMoleGameUIPresenter _gameUI;
-
         private float _nextMoleShowTimestamp;
 
-        public override void Init(PrefabFactory prefabFactory)
+        /// <summary>
+        /// Allows a game to set specific types/implementations for each of the system required interfaces
+        /// </summary>
+        /// <returns></returns>
+        public override SystemBindings GetSystemBindings()
+        {
+            var scoreService = new GameScoreService(new PlayerPrefScoreLoader(), new PlayerPrefScoreSaver());
+            var gameStateService = new GameStateService(this, scoreService);
+            var prefabFactory = new PrefabFactory();
+
+            return new SystemBindings(gameStateService, scoreService, prefabFactory, new WackAMoleGameConfig());
+        }
+
+        public override void Init(IPrefabFactory prefabFactory)
         {
             _gameField = prefabFactory.SpawnPrefab<WackAMoleGameField>("Game/WackAMole - GameField");
             _gameField.InitializeGameField(prefabFactory, GameConfig);
             _gameField.MoleHitEvent += OnMoleHit;
             _gameField.EmptyHoleHitEvent += OnEmptyHoleHit;
 
-            _gameUI = prefabFactory.SpawnUIPrefab<WackAMoleGameUIPresenter, WackAMoleGameUIView>("UI/WackAMole - GameUI");
+            _gameUI =
+                prefabFactory.SpawnUIPresenter<WackAMoleGameUIPresenter, WackAMoleGameUIView>("UI/WackAMole - GameUI");
         }
 
         public override void SetVisible(bool visible)
@@ -29,7 +43,7 @@ namespace Miniclip.WackAMole
 
         protected override void OnStart()
         {
-            _gameUI.Show();
+            _gameUI.Open();
             _gameUI.Reset(GameConfig.SecondsPerRound);
             _gameField.StartGame();
 
@@ -69,7 +83,11 @@ namespace Miniclip.WackAMole
 
         private void OnMoleHit()
         {
-            ScoreHandle.AddScore(GameConfig.ScoreGainPerMoleHit);
+            int gain = GameConfig.ScoreGainPerMoleHit;
+
+            ScoreHandle.AddScore(gain);
+
+            _gameUI.SpawnFloatingScoreDisplay(gain);
         }
 
         private void OnEmptyHoleHit()
@@ -77,6 +95,8 @@ namespace Miniclip.WackAMole
             int loss = -Mathf.Abs(GameConfig.ScoreLossPerEmptyHoleHit);
 
             ScoreHandle.AddScore(loss);
+
+            _gameUI.SpawnFloatingScoreDisplay(loss);
         }
     }
 }

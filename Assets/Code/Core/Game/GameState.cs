@@ -5,7 +5,7 @@
         None,
         Menu,
         Game,
-        Leaderboard,
-        Config
+        GameOver,
+        Leaderboard
     }
 }

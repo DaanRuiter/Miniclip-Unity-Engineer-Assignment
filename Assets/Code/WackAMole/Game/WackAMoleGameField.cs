@@ -16,7 +16,7 @@ namespace Miniclip.WackAMole.Game
 
         private TapHandler _tapHandler;
 
-        public void InitializeGameField(PrefabFactory prefabFactory, WackAMoleGameConfig gameConfig)
+        public void InitializeGameField(IPrefabFactory prefabFactory, WackAMoleGameConfig gameConfig)
         {
             _moleHoleLayout.Init(prefabFactory);
             _moleHoleLayout.Setup(gameConfig);

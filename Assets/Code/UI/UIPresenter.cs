@@ -1,9 +1,15 @@
 ﻿using Miniclip.Core;
+using Unity.Plastic.Antlr3.Runtime.Misc;
+using UnityEngine;
 
 namespace Miniclip.UI
 {
     public abstract class UIPresenter<T> : IPresenter where T : UIView
     {
+        public event Action OpenedEvent;
+
+        public event Action ClosedEvent;
+
         protected PrefabFactory PrefabFactory;
         protected T View;
 
@@ -24,22 +30,39 @@ namespace Miniclip.UI
             OnViewSet();
         }
 
-        public void Show() => View.Show();
-        public void Hide() => View.Hide();
+        public void Open()
+        {
+            View.Open();
+
+            OpenedEvent?.Invoke();
+        }
+
+        public void Close()
+        {
+            View.Close();
+
+            ClosedEvent?.Invoke();
+        }
+
+        public void Destroy()
+        {
+            Object.Destroy(View.gameObject);
+        }
 
         public void SetVisible(bool visible)
         {
             if (visible)
             {
-                Show();
+                Open();
             }
             else
             {
-                Hide();
+                Close();
             }
         }
 
         protected abstract void OnViewSet();
+
         protected abstract void OnViewUnSet();
     }
 }

@@ -25,6 +25,8 @@ namespace Miniclip.WackAMole.UI
 
         public void SpawnFloatingScoreDisplay(int score)
         {
+            var floatScore = PrefabFactory.SpawnPrefab<FloatingScoreDisplay>("UI/FloatingScore");
+            floatScore.Init(score);
         }
 
         protected override void OnViewSet()

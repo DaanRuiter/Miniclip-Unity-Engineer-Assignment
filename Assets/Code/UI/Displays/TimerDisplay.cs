@@ -5,7 +5,7 @@ namespace Miniclip.UI.Displays
 {
     public class TimerDisplay : MonoBehaviour
     {
-        private const string TimerFormat = "{0:0.00}";
+        private const string TimerFormat = "{0:0.##}";
 
         [SerializeField] private TextMeshProUGUI _timeRemainingText;
 

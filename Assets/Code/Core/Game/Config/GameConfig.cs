@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Miniclip.Core.Config
+﻿namespace Miniclip.Core.Config
 {
     public abstract class GameConfig
     {

@@ -1,15 +1,16 @@
-﻿using Miniclip.Util;
+﻿using Miniclip.Scoring;
+using Miniclip.Util;
 
 namespace Miniclip.Core
 {
-    public class GameStateService
+    public class GameStateService : IGameStateService
     {
-        public readonly ReactiveProperty<GameState> State;
+        public ReactiveProperty<GameState> State { get; }
 
         private readonly IGame _game;
-        private readonly GameScoreService _gameScoreService;
+        private readonly IScoreService _gameScoreService;
 
-        public GameStateService(IGame game, GameScoreService gameScoreService)
+        public GameStateService(IGame game, IScoreService gameScoreService)
         {
             _game = game;
             _gameScoreService = gameScoreService;

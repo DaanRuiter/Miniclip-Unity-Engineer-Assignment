@@ -19,7 +19,7 @@ namespace Miniclip.UI
 
         private RectTransform _cachedRectTransform;
 
-        public void Show() => gameObject.SetActive(true);
-        public void Hide() => gameObject.SetActive(false);
+        public void Open() => gameObject.SetActive(true);
+        public void Close() => gameObject.SetActive(false);
     }
 }

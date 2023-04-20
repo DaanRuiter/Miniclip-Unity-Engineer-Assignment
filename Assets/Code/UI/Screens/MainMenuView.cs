@@ -7,7 +7,9 @@ namespace Miniclip.UI.Screens
     public class MainMenuView : UIView
     {
         public event Action StartButtonPressedEvent;
+
         public event Action LeaderboardButtonPressedEvent;
+
         public event Action ConfigButtonPressedEvent;
 
         [SerializeField] private Button _startButton;
@@ -18,14 +20,16 @@ namespace Miniclip.UI.Screens
         {
             _startButton.onClick.AddListener(OnStartButtonPressed);
             _leaderboardButton.onClick.AddListener(OnLeaderboardButtonPressed);
-            _configButton.onClick.AddListener(OnConfigButtonPressed);
+
+            // _configButton.onClick.AddListener(OnConfigButtonPressed);
         }
 
         private void OnDestroy()
         {
             _startButton.onClick.RemoveListener(OnStartButtonPressed);
             _leaderboardButton.onClick.RemoveListener(OnLeaderboardButtonPressed);
-            _configButton.onClick.RemoveListener(OnConfigButtonPressed);
+
+            // _configButton.onClick.RemoveListener(OnConfigButtonPressed);
         }
 
         private void OnStartButtonPressed()
@@ -38,9 +42,9 @@ namespace Miniclip.UI.Screens
             LeaderboardButtonPressedEvent?.Invoke();
         }
 
-        private void OnConfigButtonPressed()
-        {
-            ConfigButtonPressedEvent?.Invoke();
-        }
+        // private void OnConfigButtonPressed()
+        // {
+        //     ConfigButtonPressedEvent?.Invoke();
+        // }
     }
 }

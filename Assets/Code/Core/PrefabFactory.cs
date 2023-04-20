@@ -3,19 +3,25 @@ using UnityEngine;
 
 namespace Miniclip.Core
 {
-    public class PrefabFactory
+    public class PrefabFactory : IPrefabFactory
     {
         private const string BasePrefabPath = "Prefabs/";
 
         private Transform _defaultPrefabParent;
         private RectTransform _defaultUIParent;
 
-        public PrefabFactory(Transform defaultPrefabParent, RectTransform defaultUIParent)
+        public void SetDefaultParents(Transform defaultPrefabParent, RectTransform defaultUIParent)
         {
             _defaultPrefabParent = defaultPrefabParent;
             _defaultUIParent = defaultUIParent;
         }
 
+        /// <summary>
+        /// Loads the prefab at the specified path and will instantiate it on the provided parent.
+        /// If no parent is provided, the default parent will be used instead.
+        /// </summary>
+        /// <param name="prefabPath">Path at which the prefab exists. Is automatically prefixed with the base folder</param>
+        /// <param name="parent"></param>
         public T SpawnPrefab<T>(string prefabPath, Transform parent = null) where T : Component
         {
             string path = BasePrefabPath + prefabPath;
@@ -40,7 +46,7 @@ namespace Miniclip.Core
             return instance;
         }
 
-        public TPresenter SpawnUIPrefab<TPresenter, TView>(string prefabPath, RectTransform parent = null)
+        public TPresenter SpawnUIPresenter<TPresenter, TView>(string prefabPath, RectTransform parent = null)
             where TPresenter : UIPresenter<TView>, new()
             where TView : UIView
         {
