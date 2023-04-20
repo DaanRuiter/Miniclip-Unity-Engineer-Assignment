@@ -1,11 +1,13 @@
-﻿using Miniclip.Scoring;
-using Miniclip.Util;
+﻿using System;
+using Miniclip.Scoring;
 
 namespace Miniclip.Core
 {
     public class GameStateService : IGameStateService
     {
-        public ReactiveProperty<GameState> State { get; }
+        public event Action<GameState> GameStateChangedEvent;
+
+        public GameState State { get; private set; }
 
         private readonly IGame _game;
         private readonly IScoreService _gameScoreService;
@@ -15,13 +17,19 @@ namespace Miniclip.Core
             _game = game;
             _gameScoreService = gameScoreService;
 
-            State = new ReactiveProperty<GameState>(GameState.None);
-            State.ValueUpdatedEvent += OnGameStateChanged;
+            State = GameState.None;
+            GameStateChangedEvent += OnGameStateChanged;
         }
 
         public void SetGameState(GameState gameState)
         {
-            State.SetValue(gameState);
+            if (State == gameState)
+            {
+                return;
+            }
+
+            State = gameState;
+            GameStateChangedEvent?.Invoke(gameState);
         }
 
         private void OnGameStateChanged(GameState gameState)

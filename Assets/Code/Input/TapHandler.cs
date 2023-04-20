@@ -36,8 +36,7 @@ namespace Miniclip.Input
             }
         }
 
-        public bool TryFindGameObjectUnderTouch(
-            Vector2 touchPosition,
+        public bool TryFindGameObjectUnderTouch(Vector2 touchPosition,
             string targetLayer,
             out GameObject hitTarget,
             int raycastDistance = DefaultRaycastDistance)

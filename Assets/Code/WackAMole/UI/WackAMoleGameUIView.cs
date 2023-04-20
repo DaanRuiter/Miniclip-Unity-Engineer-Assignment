@@ -1,7 +1,6 @@
 ﻿using Miniclip.UI;
 using Miniclip.UI.Displays;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Miniclip.WackAMole.UI
 {

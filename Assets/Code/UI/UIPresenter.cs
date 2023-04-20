@@ -1,6 +1,6 @@
-﻿using Miniclip.Core;
-using Unity.Plastic.Antlr3.Runtime.Misc;
-using UnityEngine;
+﻿using System;
+using Miniclip.Core;
+using Object = UnityEngine.Object;
 
 namespace Miniclip.UI
 {

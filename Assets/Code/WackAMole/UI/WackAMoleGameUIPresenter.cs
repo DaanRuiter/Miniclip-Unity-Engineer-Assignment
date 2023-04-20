@@ -9,6 +9,8 @@ namespace Miniclip.WackAMole.UI
         {
             View.SetScore(0);
             View.SetTime(roundTimeSeconds);
+
+            ClearFloatingScores();
         }
 
         public void SetScore(int score)
@@ -36,6 +38,14 @@ namespace Miniclip.WackAMole.UI
 
         protected override void OnViewUnSet()
         {
+        }
+
+        private void ClearFloatingScores()
+        {
+            foreach (Transform floatingScore in View.FloatingScoreContainer)
+            {
+                Object.Destroy(floatingScore.gameObject);
+            }
         }
     }
 }

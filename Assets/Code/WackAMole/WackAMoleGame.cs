@@ -19,7 +19,10 @@ namespace Miniclip.WackAMole
         /// <returns></returns>
         public override SystemBindings GetSystemBindings()
         {
-            var scoreService = new GameScoreService(new PlayerPrefScoreLoader(), new PlayerPrefScoreSaver());
+            var scoreLoader = new PlayerPrefScoreLoader();
+            var scoreSaver = new PlayerPrefScoreSaver(scoreLoader);
+
+            var scoreService = new GameScoreService(scoreLoader, scoreSaver);
             var gameStateService = new GameStateService(this, scoreService);
             var prefabFactory = new PrefabFactory();
 
@@ -76,7 +79,12 @@ namespace Miniclip.WackAMole
 
         private void ShowRandomMole()
         {
-            _gameField.ShowRandomMole();
+            int showCount = Random.Range(GameConfig.MinMoleShowCount, GameConfig.MaxMoleShowCount);
+
+            for (int i = 0; i < showCount; i++)
+            {
+                _gameField.ShowRandomMole();
+            }
 
             float interval = Random.Range(GameConfig.MinMoleShowIntervalSeconds, GameConfig.MaxMoleShowIntervalSeconds);
             _nextMoleShowTimestamp = Time.time + interval;

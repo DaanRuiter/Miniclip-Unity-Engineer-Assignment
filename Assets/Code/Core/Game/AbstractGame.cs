@@ -8,7 +8,7 @@ namespace Miniclip.Core
 {
     public abstract class AbstractGame<T> : MonoBehaviour, IGame where T : GameConfig
     {
-        public event Action<GameScoreHandle> RoundTimerElapsedEvent;
+        public event Action<GameScoreHandle> GameOverEvent;
 
         protected float TimeLeft => _timerStartTimeStamp + GameConfig.SecondsPerRound - Time.time;
 
@@ -17,7 +17,7 @@ namespace Miniclip.Core
         protected T GameConfig;
         protected GameScoreHandle ScoreHandle;
 
-        private int _timerStartTimeStamp;
+        private float _timerStartTimeStamp;
         private bool _isPlaying;
 
         public abstract SystemBindings GetSystemBindings();
@@ -46,6 +46,7 @@ namespace Miniclip.Core
         {
             ScoreHandle = scoreHandle;
             _isPlaying = true;
+            _timerStartTimeStamp = Time.time;
 
             OnStart();
         }
@@ -56,7 +57,7 @@ namespace Miniclip.Core
             {
                 _isPlaying = false;
 
-                RoundTimerElapsedEvent?.Invoke(ScoreHandle);
+                GameOverEvent?.Invoke(ScoreHandle);
 
                 OnStop();
             }

@@ -5,11 +5,9 @@ namespace Miniclip.Scoring
 {
     public class PlayerPrefScoreLoader : IScoreLoader
     {
-        private const string Key = "Highscores";
-
         public void FetchScoreData(Action<ScoreData> successCallback, Action failedCallback)
         {
-            string json = PlayerPrefs.HasKey(Key) ? PlayerPrefs.GetString(Key) : string.Empty;
+            string json = PlayerPrefs.HasKey("HighScores") ? PlayerPrefs.GetString("HighScores") : string.Empty;
             ScoreData scoreData;
 
             try
@@ -22,7 +20,7 @@ namespace Miniclip.Scoring
                 throw;
             }
 
-            successCallback?.Invoke(scoreData);
+            successCallback?.Invoke(scoreData ?? new ScoreData());
         }
     }
 }

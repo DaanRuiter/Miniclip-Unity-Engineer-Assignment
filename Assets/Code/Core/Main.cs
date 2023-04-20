@@ -7,47 +7,24 @@ namespace Miniclip.Core
     /// <summary>
     /// This class represents the main entry point of this game's systems
     /// </summary>
-    public class Main : MonoBehaviour
+    public static class Main
     {
-        [SerializeField] private Transform _gameContainer;
-        [SerializeField] private RectTransform _UIContainer;
-
-        private IGame _game;
-        private MainMenuPresenter _mainMenu;
-        private GameOverPresenter _gameOverScreen;
-        private LeaderboardPresenter _leaderboard;
-        private SystemBindings _systemBindings;
-
-        private void Awake()
-        {
-            var currentGame = GetComponent<IGame>();
-
-            if (currentGame != null)
-            {
-                Init(currentGame);
-            }
-        }
-
-        private void Start()
-        {
-            _systemBindings.GameStateService.SetGameState(GameState.Menu);
-        }
-
-        private void OnDestroy()
-        {
-            Dispose();
-        }
+        private static IGame _game;
+        private static MainMenuPresenter _mainMenu;
+        private static GameOverPresenter _gameOverScreen;
+        private static LeaderboardPresenter _leaderboard;
+        private static SystemBindings _systemBindings;
 
         /// <summary>
         /// Calling this method with the intended game will initialize all systems and start the game flow.
         /// Can also be used from a test case
         /// </summary>
         /// <param name="game">Intended game to initialize</param>
-        private void Init(IGame game)
+        public static void Init(IGame game, Transform gameContainer, RectTransform uiContainer)
         {
             _systemBindings = game.GetSystemBindings();
-            _systemBindings.PrefabFactory.SetDefaultParents(_gameContainer, _UIContainer);
-            _systemBindings.GameStateService.State.ValueUpdatedEvent += OnGameStateSwitched;
+            _systemBindings.PrefabFactory.SetDefaultParents(gameContainer, uiContainer);
+            _systemBindings.GameStateService.GameStateChangedEvent += OnGameStateSwitched;
 
             // Spawn main menu
             _mainMenu = _systemBindings.PrefabFactory.SpawnUIPresenter<MainMenuPresenter, MainMenuView>("UI/MainMenu");
@@ -60,45 +37,48 @@ namespace Miniclip.Core
             // Spawn leaderboard
             _leaderboard =
                 _systemBindings.PrefabFactory.SpawnUIPresenter<LeaderboardPresenter, LeaderboardView>("UI/Leaderboard");
-            _leaderboard.Close();
+            _leaderboard.Init(_systemBindings.ScoreService);
             _leaderboard.ClosedEvent += OnLeaderboardClosed;
 
             // Spawn game
             _game = game;
             _game.SetConfig(_systemBindings.GameConfig);
             _game.Init(_systemBindings.PrefabFactory);
-            _game.RoundTimerElapsedEvent += OnGameRoundTimerElapsed;
+            _game.GameOverEvent += OnGameGameOver;
         }
 
-        private void Dispose()
+        public static void Start()
+        {
+            _systemBindings.GameStateService.SetGameState(GameState.Menu);
+        }
+
+        public static void Dispose()
         {
             _mainMenu.Destroy();
             _leaderboard.Destroy();
             _game.Destroy();
         }
 
-        private void OnGameStateSwitched(GameState state)
+        private static void OnGameStateSwitched(GameState state)
         {
             _mainMenu.SetVisible(state == GameState.Menu);
             _game.SetVisible(state == GameState.Game);
             _leaderboard.SetVisible(state == GameState.Leaderboard);
             _gameOverScreen.SetVisible(state == GameState.GameOver);
-
-            Debug.Log($"Switched game state to {state}");
         }
 
-        private void OnGameRoundTimerElapsed(GameScoreHandle scoreHandle)
+        private static void OnGameGameOver(GameScoreHandle scoreHandle)
         {
             _systemBindings.GameStateService.SetGameState(GameState.GameOver);
             _gameOverScreen.SetScore(scoreHandle);
         }
 
-        private void OnLeaderboardClosed()
+        private static void OnLeaderboardClosed()
         {
             _systemBindings.GameStateService.SetGameState(GameState.Menu);
         }
 
-        private void OnScoreSubmitted()
+        private static void OnScoreSubmitted()
         {
             _systemBindings.GameStateService.SetGameState(GameState.Leaderboard);
         }

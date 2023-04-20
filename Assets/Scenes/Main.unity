@@ -284,29 +284,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1147205495}
-  - component: {fileID: 1147205494}
   - component: {fileID: 1147205496}
+  - component: {fileID: 1147205497}
   m_Layer: 0
-  m_Name: Main
+  m_Name: WackAMoleGame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1147205494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1147205493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf96843f11644d18aaee9d9c48cfbba3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gameContainer: {fileID: 1147205495}
-  _UIContainer: {fileID: 2047420660}
 --- !u!4 &1147205495
 Transform:
   m_ObjectHideFlags: 0
@@ -334,6 +320,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c8a66ac803649e184f343a00a5483ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1147205497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147205493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73a6f89fd4d4619835dc7734116cf73, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gameContainer: {fileID: 1147205495}
+  _UIContainer: {fileID: 2047420660}
+  _wackAMoleGame: {fileID: 1147205496}
 --- !u!1 &2047420656
 GameObject:
   m_ObjectHideFlags: 0

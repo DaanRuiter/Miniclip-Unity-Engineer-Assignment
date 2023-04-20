@@ -1,20 +1,32 @@
-﻿using Miniclip.Scoring;
+﻿using System.Linq;
+using Miniclip.Scoring;
 using Miniclip.UI.Displays;
+using UnityEngine;
 
 namespace Miniclip.UI.Screens
 {
     public class LeaderboardPresenter : UIPresenter<LeaderboardView>
     {
+        private IScoreService _scoreService;
+
+        public void Init(IScoreService scoreService)
+        {
+            _scoreService = scoreService;
+
+            OpenedEvent += FetchScores;
+        }
+
         public void DisplayScores(ScoreData scoreData)
         {
             View.DisposeEntries();
 
-            for (int i = 0; i < scoreData.Entries.Length; i++)
+            var sortedEntries = scoreData.Entries.ToList();
+            sortedEntries.Sort((scoreA, scoreB) => scoreB.Score - scoreA.Score);
+
+            for (int i = 0; i < sortedEntries.Count; i++)
             {
-                var entry = scoreData.Entries[i];
-                var entryDisplay =
-                    PrefabFactory.SpawnPrefab<LeaderboardEntryDisplay>("UI/LeaderboardEntryDisplay",
-                        View.EntryContainer);
+                var entry = sortedEntries[i];
+                var entryDisplay = PrefabFactory.SpawnPrefab<LeaderboardEntryDisplay>("UI/LeaderboardEntry", View.EntryContainer);
 
                 entryDisplay.Init(entry.PlayerName, entry.Score);
                 entryDisplay.transform.SetSiblingIndex(i);
@@ -29,6 +41,11 @@ namespace Miniclip.UI.Screens
         protected override void OnViewUnSet()
         {
             View.CloseButtonPressedEvent -= Close;
+        }
+
+        private void FetchScores()
+        {
+            _scoreService.FetchScoreData(DisplayScores, () => Debug.LogError($"Failed to load scores"));
         }
     }
 }
