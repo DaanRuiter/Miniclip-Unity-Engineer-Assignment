@@ -1,4 +1,5 @@
-﻿using Miniclip.UI.Screens;
+﻿using Miniclip.Scoring;
+using Miniclip.UI.Screens;
 using UnityEngine;
 
 namespace Miniclip.Core
@@ -44,6 +45,7 @@ namespace Miniclip.Core
         /// <param name="game">Intended game to initialize</param>
         private void Init(IGame game)
         {
+            _systemBindings = game.GetSystemBindings();
             _systemBindings.PrefabFactory.SetDefaultParents(_gameContainer, _UIContainer);
             _systemBindings.GameStateService.State.ValueUpdatedEvent += OnGameStateSwitched;
 
@@ -53,7 +55,7 @@ namespace Miniclip.Core
 
             _gameOverScreen =
                 _systemBindings.PrefabFactory.SpawnUIPresenter<GameOverPresenter, GameOverView>("UI/GameOver");
-            _gameOverScreen.ClosedEvent += OnScoreSubmitted;
+            _gameOverScreen.ScoreSubmittedEvent += OnScoreSubmitted;
 
             // Spawn leaderboard
             _leaderboard =
@@ -85,9 +87,10 @@ namespace Miniclip.Core
             Debug.Log($"Switched game state to {state}");
         }
 
-        private void OnGameRoundTimerElapsed()
+        private void OnGameRoundTimerElapsed(GameScoreHandle scoreHandle)
         {
             _systemBindings.GameStateService.SetGameState(GameState.GameOver);
+            _gameOverScreen.SetScore(scoreHandle);
         }
 
         private void OnLeaderboardClosed()

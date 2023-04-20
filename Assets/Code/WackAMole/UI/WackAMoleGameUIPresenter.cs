@@ -23,10 +23,11 @@ namespace Miniclip.WackAMole.UI
             View.SetTime(time);
         }
 
-        public void SpawnFloatingScoreDisplay(int score)
+        public void SpawnFloatingScoreDisplay(Vector2 screenPosition, int score)
         {
-            var floatScore = PrefabFactory.SpawnPrefab<FloatingScoreDisplay>("UI/FloatingScore");
-            floatScore.Init(score);
+            var floatScore = PrefabFactory.SpawnPrefab<FloatingScoreDisplay>("UI/FloatingScore", View.FloatingScoreContainer);
+            floatScore.SetScore(score);
+            floatScore.SetScreenPosition(screenPosition);
         }
 
         protected override void OnViewSet()

@@ -9,8 +9,9 @@ namespace Miniclip.WackAMole.Game
     {
         private const string MoleLayerName = "Mole";
 
-        public event Action MoleHitEvent;
-        public event Action EmptyHoleHitEvent;
+        public event Action<MoleHole> MoleHitEvent;
+
+        public event Action<MoleHole> EmptyHoleHitEvent;
 
         [SerializeField] private MoleHoleLayout _moleHoleLayout;
 
@@ -53,15 +54,17 @@ namespace Miniclip.WackAMole.Game
                 return;
             }
 
-            if (hitBox.MoleHole.IsHittable())
-            {
-                hitBox.MoleHole.SetState(MoleState.Hit);
+            var moleHole = hitBox.MoleHole;
 
-                MoleHitEvent?.Invoke();
-            }
-            else if (hitBox.MoleHole.MoleState != MoleState.Hit)
+            if (moleHole.IsHittable())
             {
-                EmptyHoleHitEvent?.Invoke();
+                moleHole.SetState(MoleState.Hit);
+
+                MoleHitEvent?.Invoke(moleHole);
+            }
+            else if (moleHole.MoleState != MoleState.Hit)
+            {
+                EmptyHoleHitEvent?.Invoke(moleHole);
             }
         }
     }

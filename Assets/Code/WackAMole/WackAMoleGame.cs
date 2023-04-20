@@ -1,5 +1,6 @@
 ﻿using Miniclip.Core;
 using Miniclip.Scoring;
+using Miniclip.Util;
 using Miniclip.WackAMole.Game;
 using Miniclip.WackAMole.UI;
 using UnityEngine;
@@ -81,22 +82,27 @@ namespace Miniclip.WackAMole
             _nextMoleShowTimestamp = Time.time + interval;
         }
 
-        private void OnMoleHit()
+        private void OnMoleHit(MoleHole moleHole)
         {
             int gain = GameConfig.ScoreGainPerMoleHit;
 
             ScoreHandle.AddScore(gain);
 
-            _gameUI.SpawnFloatingScoreDisplay(gain);
+            _gameUI.SpawnFloatingScoreDisplay(GetMoleScreenPosition(moleHole), gain);
         }
 
-        private void OnEmptyHoleHit()
+        private void OnEmptyHoleHit(MoleHole moleHole)
         {
             int loss = -Mathf.Abs(GameConfig.ScoreLossPerEmptyHoleHit);
 
             ScoreHandle.AddScore(loss);
 
-            _gameUI.SpawnFloatingScoreDisplay(loss);
+            _gameUI.SpawnFloatingScoreDisplay(GetMoleScreenPosition(moleHole), loss);
+        }
+
+        private Vector2 GetMoleScreenPosition(MoleHole moleHole)
+        {
+            return ScreenUtils.WorldToScreenPoint(moleHole.transform.position);
         }
     }
 }

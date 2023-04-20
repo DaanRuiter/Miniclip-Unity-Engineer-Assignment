@@ -32,6 +32,11 @@ namespace Miniclip.UI
 
         public void Open()
         {
+            if (View.transform.gameObject.activeInHierarchy)
+            {
+                return;
+            }
+
             View.Open();
 
             OpenedEvent?.Invoke();
@@ -39,6 +44,11 @@ namespace Miniclip.UI
 
         public void Close()
         {
+            if (!View.transform.gameObject.activeInHierarchy)
+            {
+                return;
+            }
+
             View.Close();
 
             ClosedEvent?.Invoke();
@@ -46,7 +56,10 @@ namespace Miniclip.UI
 
         public void Destroy()
         {
-            Object.Destroy(View.gameObject);
+            if (View != null)
+            {
+                Object.Destroy(View.gameObject);
+            }
         }
 
         public void SetVisible(bool visible)

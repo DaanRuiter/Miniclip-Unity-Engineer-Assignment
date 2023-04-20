@@ -6,7 +6,7 @@ namespace Miniclip.Core
 {
     public interface IGame : IPresenter
     {
-        event Action RoundTimerElapsedEvent;
+        event Action<GameScoreHandle> RoundTimerElapsedEvent;
 
         SystemBindings GetSystemBindings();
 

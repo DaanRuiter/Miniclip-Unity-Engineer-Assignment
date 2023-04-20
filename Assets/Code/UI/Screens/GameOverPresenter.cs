@@ -1,14 +1,19 @@
-﻿using Miniclip.Scoring;
+﻿using System;
+using Miniclip.Scoring;
 
 namespace Miniclip.UI.Screens
 {
     public class GameOverPresenter : UIPresenter<GameOverView>
     {
+        public event Action ScoreSubmittedEvent;
+
         private GameScoreHandle _scoreHandle;
 
-        public void Init(GameScoreHandle scoreHandle)
+        public void SetScore(GameScoreHandle scoreHandle)
         {
             _scoreHandle = scoreHandle;
+
+            View.SetPlayerScore(_scoreHandle.Score);
         }
 
         protected override void OnViewSet()
@@ -26,6 +31,8 @@ namespace Miniclip.UI.Screens
             _scoreHandle.SubmitScore(playerName);
 
             Close();
+
+            ScoreSubmittedEvent?.Invoke();
         }
     }
 }

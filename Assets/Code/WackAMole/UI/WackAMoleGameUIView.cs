@@ -5,10 +5,13 @@ using UnityEngine.EventSystems;
 
 namespace Miniclip.WackAMole.UI
 {
-    public class WackAMoleGameUIView : UIView, IPointerClickHandler
+    public class WackAMoleGameUIView : UIView
     {
         [SerializeField] private ScoreDisplay _scoreDisplay;
         [SerializeField] private TimerDisplay _timerDisplay;
+        [SerializeField] private RectTransform _floatingScoreContainer;
+
+        public RectTransform FloatingScoreContainer => _floatingScoreContainer;
 
         public void SetScore(int score)
         {
@@ -18,11 +21,6 @@ namespace Miniclip.WackAMole.UI
         public void SetTime(float timeInSeconds)
         {
             _timerDisplay.SetTime(timeInSeconds);
-        }
-
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            Debug.Log($"Click at {eventData.position}");
         }
     }
 }

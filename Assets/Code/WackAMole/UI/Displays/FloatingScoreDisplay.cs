@@ -11,12 +11,18 @@ namespace Miniclip.WackAMole.UI
         [SerializeField] private Color _scoreLossColor = Color.red;
         [SerializeField] private float _displayDurationSeconds = 0.75f;
 
-        public void Init(int score)
+        public void SetScreenPosition(Vector2 screenPosition)
+        {
+            transform.localPosition = screenPosition;
+        }
+
+        public void SetScore(int score)
         {
             bool scoreLoss = score < 0;
+            string label = scoreLoss ? score.ToString() : $"+{score}";
 
             _scoreText.color = scoreLoss ? _scoreLossColor : _scoreGainColor;
-            _scoreText.text = score.ToString();
+            _scoreText.text = label;
 
             StartCoroutine(DestroyDelayed(_displayDurationSeconds));
         }

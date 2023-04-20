@@ -8,7 +8,7 @@ namespace Miniclip.Core
 {
     public abstract class AbstractGame<T> : MonoBehaviour, IGame where T : GameConfig
     {
-        public event Action RoundTimerElapsedEvent;
+        public event Action<GameScoreHandle> RoundTimerElapsedEvent;
 
         protected float TimeLeft => _timerStartTimeStamp + GameConfig.SecondsPerRound - Time.time;
 
@@ -56,7 +56,7 @@ namespace Miniclip.Core
             {
                 _isPlaying = false;
 
-                RoundTimerElapsedEvent?.Invoke();
+                RoundTimerElapsedEvent?.Invoke(ScoreHandle);
 
                 OnStop();
             }
