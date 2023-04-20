@@ -37,7 +37,7 @@ namespace Miniclip.WackAMole
             _gameField.EmptyHoleHitEvent += OnEmptyHoleHit;
 
             _gameUI =
-                prefabFactory.SpawnUIPresenter<WackAMoleGameUIPresenter, WackAMoleGameUIView>("UI/WackAMole - GameUI");
+                prefabFactory.SpawnUIPresenter<WackAMoleGameUIPresenter, WackAMoleGameUIView>("UI/Game/WackAMole - GameUI");
         }
 
         public override void SetVisible(bool visible)

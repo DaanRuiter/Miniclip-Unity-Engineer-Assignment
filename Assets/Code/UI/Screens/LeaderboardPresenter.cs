@@ -26,7 +26,8 @@ namespace Miniclip.UI.Screens
             for (int i = 0; i < sortedEntries.Count; i++)
             {
                 var entry = sortedEntries[i];
-                var entryDisplay = PrefabFactory.SpawnPrefab<LeaderboardEntryDisplay>("UI/LeaderboardEntry", View.EntryContainer);
+                var entryDisplay =
+                    PrefabFactory.SpawnPrefab<LeaderboardEntryDisplay>("UI/Elements/LeaderboardEntry", View.EntryContainer);
 
                 entryDisplay.Init(entry.PlayerName, entry.Score);
                 entryDisplay.transform.SetSiblingIndex(i);

@@ -27,7 +27,8 @@ namespace Miniclip.WackAMole.UI
 
         public void SpawnFloatingScoreDisplay(Vector2 screenPosition, int score)
         {
-            var floatScore = PrefabFactory.SpawnPrefab<FloatingScoreDisplay>("UI/FloatingScore", View.FloatingScoreContainer);
+            var floatScore =
+                PrefabFactory.SpawnPrefab<FloatingScoreDisplay>("UI/Elements/FloatingScore", View.FloatingScoreContainer);
             floatScore.SetScore(score);
             floatScore.SetScreenPosition(screenPosition);
         }

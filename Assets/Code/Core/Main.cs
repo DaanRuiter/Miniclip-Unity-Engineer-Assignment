@@ -27,16 +27,19 @@ namespace Miniclip.Core
             _systemBindings.GameStateService.GameStateChangedEvent += OnGameStateSwitched;
 
             // Spawn main menu
-            _mainMenu = _systemBindings.PrefabFactory.SpawnUIPresenter<MainMenuPresenter, MainMenuView>("UI/MainMenu");
+            _mainMenu = _systemBindings.PrefabFactory.SpawnUIPresenter<MainMenuPresenter, MainMenuView>(_systemBindings.GameConfig
+                .MainMenuPrefabPath);
             _mainMenu.Init(_systemBindings.GameStateService);
 
             _gameOverScreen =
-                _systemBindings.PrefabFactory.SpawnUIPresenter<GameOverPresenter, GameOverView>("UI/GameOver");
+                _systemBindings.PrefabFactory.SpawnUIPresenter<GameOverPresenter, GameOverView>(_systemBindings.GameConfig
+                    .GameOverPrefabPath);
             _gameOverScreen.ScoreSubmittedEvent += OnScoreSubmitted;
 
             // Spawn leaderboard
             _leaderboard =
-                _systemBindings.PrefabFactory.SpawnUIPresenter<LeaderboardPresenter, LeaderboardView>("UI/Leaderboard");
+                _systemBindings.PrefabFactory.SpawnUIPresenter<LeaderboardPresenter, LeaderboardView>(_systemBindings.GameConfig
+                    .LeaderboardPrefabPath);
             _leaderboard.Init(_systemBindings.ScoreService);
             _leaderboard.ClosedEvent += OnLeaderboardClosed;
 
