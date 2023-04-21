@@ -16,6 +16,7 @@ The code is split into three parts:
 - The core part which supports an abstract implementation of a small where the player can achieve a score.
 - The common part that contains standard/common implementations of the core's interfaces that can be used by any game's implementation.
 - The Wack-A-Mole part that contains all the games specific implementations and logic.
+
 This means that you could, with little effort, create a new type of game in this structure and get it working by only having to worry about this game's specific implementations.
 
 ### Improvements
