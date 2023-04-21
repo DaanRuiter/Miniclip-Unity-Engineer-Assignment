@@ -12,7 +12,10 @@ The project contains a playable android build at **Builds/WackAMole.apk**.
 The main entry point for this project is the Main class, where a game instance can be passed along with its dependencies.
 This is done from the WackAMoleSceneWrapper which passes the game instance and some scene references. This means the core structure, apart from some standard UI and factory implementations, does not require Unity to function and could be called from different engines/frameworks.
 Calling the Init method on Main will initialize the games loop and state.
-The code is split into two parts; the core part which supports an abstract implementation of a small where the player can achieve a score, and the Wack-A-Mole part that contains all the games specific implementations and logic.
+The code is split into three parts: 
+- The core part which supports an abstract implementation of a small where the player can achieve a score.
+- The commin part that contains standard/common implementations of the core's interfaces that can be used by any game implementation.
+- The Wack-A-Mole part that contains all the games specific implementations and logic.
 This means that you could, with little effort, create a new type of game in this structure and get it working by only having to worry about this game's specific implementations.
 
 ### Improvements
