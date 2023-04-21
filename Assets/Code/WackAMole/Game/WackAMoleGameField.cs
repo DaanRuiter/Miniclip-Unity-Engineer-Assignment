@@ -1,6 +1,6 @@
 ﻿using System;
-using Miniclip.Core;
-using Miniclip.Input;
+using Miniclip.Common.Input;
+using Miniclip.Core.Interfaces;
 using UnityEngine;
 
 namespace Miniclip.WackAMole.Game

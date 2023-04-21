@@ -1,6 +1,6 @@
 ﻿using System;
 using Miniclip.Core.Config;
-using Miniclip.Scoring;
+using Miniclip.Core.Interfaces;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -8,14 +8,14 @@ namespace Miniclip.Core
 {
     public abstract class AbstractGame<T> : MonoBehaviour, IGame where T : GameConfig
     {
-        public event Action<GameScoreHandle> GameOverEvent;
+        public event Action<IScoreHandle> GameOverEvent;
 
         protected float TimeLeft => _timerStartTimeStamp + GameConfig.SecondsPerRound - Time.time;
 
         protected bool IsPlaying => _isPlaying;
 
         protected T GameConfig;
-        protected GameScoreHandle ScoreHandle;
+        protected IScoreHandle ScoreHandle;
 
         private float _timerStartTimeStamp;
         private bool _isPlaying;
@@ -42,7 +42,7 @@ namespace Miniclip.Core
             GameConfig = specificGameConfig;
         }
 
-        public void StartGame(GameScoreHandle scoreHandle)
+        public void StartGame(IScoreHandle scoreHandle)
         {
             ScoreHandle = scoreHandle;
             _isPlaying = true;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Miniclip.Core;
-using Miniclip.Util;
+using Miniclip.Common.Util;
+using Miniclip.Core.Interfaces;
 using UnityEngine;
 
 namespace Miniclip.WackAMole.Game
@@ -14,8 +14,8 @@ namespace Miniclip.WackAMole.Game
         private IPrefabFactory _prefabFactory;
         private List<MoleHole> _moleHoles;
 
-        private int _minShowDuration;
-        private int _maxShowDuration;
+        private float _minShowDuration;
+        private float _maxShowDuration;
 
         public void Init(IPrefabFactory prefabFactory)
         {
@@ -30,6 +30,9 @@ namespace Miniclip.WackAMole.Game
 
         public void Setup(WackAMoleGameConfig gameConfig)
         {
+            _minShowDuration = gameConfig.MinMoleShowDurationSeconds;
+            _maxShowDuration = gameConfig.MaxMoleShowDurationSeconds;
+
             if (_moleHoles.Count == gameConfig.MoleHoleCount)
             {
                 return;

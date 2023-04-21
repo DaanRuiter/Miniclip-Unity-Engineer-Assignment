@@ -1,4 +1,4 @@
-﻿using Miniclip.UI;
+﻿using Miniclip.Core.UI;
 using UnityEngine;
 
 namespace Miniclip.WackAMole.UI

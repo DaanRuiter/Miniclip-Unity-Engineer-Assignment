@@ -1,6 +1,8 @@
-﻿using Miniclip.Core;
-using Miniclip.Scoring;
-using Miniclip.Util;
+﻿using Miniclip.Common;
+using Miniclip.Common.Scoring;
+using Miniclip.Common.Util;
+using Miniclip.Core;
+using Miniclip.Core.Interfaces;
 using Miniclip.WackAMole.Game;
 using Miniclip.WackAMole.UI;
 using UnityEngine;
@@ -94,7 +96,7 @@ namespace Miniclip.WackAMole
         {
             int gain = GameConfig.ScoreGainPerMoleHit;
 
-            ScoreHandle.AddScore(gain);
+            ScoreHandle.AdjustScore(gain);
 
             _gameUI.SpawnFloatingScoreDisplay(GetMoleScreenPosition(moleHole), gain);
         }
@@ -103,7 +105,7 @@ namespace Miniclip.WackAMole
         {
             int loss = -Mathf.Abs(GameConfig.ScoreLossPerEmptyHoleHit);
 
-            ScoreHandle.AddScore(loss);
+            ScoreHandle.AdjustScore(loss);
 
             _gameUI.SpawnFloatingScoreDisplay(GetMoleScreenPosition(moleHole), loss);
         }

@@ -1,5 +1,5 @@
-﻿using Miniclip.UI;
-using Miniclip.UI.Displays;
+﻿using Miniclip.Common.UI.Displays;
+using Miniclip.Core.UI;
 using UnityEngine;
 
 namespace Miniclip.WackAMole.UI

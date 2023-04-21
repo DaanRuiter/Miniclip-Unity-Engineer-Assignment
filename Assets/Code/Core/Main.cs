@@ -1,5 +1,5 @@
-﻿using Miniclip.Scoring;
-using Miniclip.UI.Screens;
+﻿using Miniclip.Core.Interfaces;
+using Miniclip.Core.UI.Screens;
 using UnityEngine;
 
 namespace Miniclip.Core
@@ -27,18 +27,21 @@ namespace Miniclip.Core
             _systemBindings.GameStateService.GameStateChangedEvent += OnGameStateSwitched;
 
             // Spawn main menu
-            _mainMenu = _systemBindings.PrefabFactory.SpawnUIPresenter<MainMenuPresenter, MainMenuView>(_systemBindings.GameConfig
+            _mainMenu = _systemBindings.PrefabFactory.SpawnUIPresenter<MainMenuPresenter, MainMenuView>(_systemBindings
+                .GameConfig
                 .MainMenuPrefabPath);
             _mainMenu.Init(_systemBindings.GameStateService);
 
             _gameOverScreen =
-                _systemBindings.PrefabFactory.SpawnUIPresenter<GameOverPresenter, GameOverView>(_systemBindings.GameConfig
+                _systemBindings.PrefabFactory.SpawnUIPresenter<GameOverPresenter, GameOverView>(_systemBindings
+                    .GameConfig
                     .GameOverPrefabPath);
             _gameOverScreen.ScoreSubmittedEvent += OnScoreSubmitted;
 
             // Spawn leaderboard
             _leaderboard =
-                _systemBindings.PrefabFactory.SpawnUIPresenter<LeaderboardPresenter, LeaderboardView>(_systemBindings.GameConfig
+                _systemBindings.PrefabFactory.SpawnUIPresenter<LeaderboardPresenter, LeaderboardView>(_systemBindings
+                    .GameConfig
                     .LeaderboardPrefabPath);
             _leaderboard.Init(_systemBindings.ScoreService);
             _leaderboard.ClosedEvent += OnLeaderboardClosed;
@@ -70,7 +73,7 @@ namespace Miniclip.Core
             _gameOverScreen.SetVisible(state == GameState.GameOver);
         }
 
-        private static void OnGameGameOver(GameScoreHandle scoreHandle)
+        private static void OnGameGameOver(IScoreHandle scoreHandle)
         {
             _systemBindings.GameStateService.SetGameState(GameState.GameOver);
             _gameOverScreen.SetScore(scoreHandle);

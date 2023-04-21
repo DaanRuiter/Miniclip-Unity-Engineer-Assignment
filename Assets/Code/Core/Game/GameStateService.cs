@@ -1,5 +1,5 @@
 ﻿using System;
-using Miniclip.Scoring;
+using Miniclip.Core.Interfaces;
 
 namespace Miniclip.Core
 {
