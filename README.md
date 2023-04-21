@@ -19,11 +19,11 @@ This means that you could, with little effort, create a new type of game in this
 I would make the following improvements to this project if I had more time.
 
 - Scores split per game implementation.
- - Currently the scores are stored using the key Highscores. if you would include the current game's name in this key you could store the scores for each game independently.
+    - Currently the scores are stored using the key Highscores. if you would include the current game's name in this key you could store the scores for each game independently.
 - Prefab collection
- - Currently prefabs are loaded by their resource path and are mostly hardcored. Creating a scriptable asset allows you to store prefab paths in text form or even allow you to directly link prefabs themselves.
+    - Currently prefabs are loaded by their resource path and are mostly hardcored. Creating a scriptable asset allows you to store prefab paths in text form or even allow you to directly link prefabs themselves.
 - Editable Game config
- - The game has a config class containing a number of tweakable gameplay settings. Adding an in-game editor for these settings allows you to tweak and experiment with the values easily. 
+    - The game has a config class containing a number of tweakable gameplay settings. Adding an in-game editor for these settings allows you to tweak and experiment with the values easily. 
 
 ### Known issues
 - Some of the UI does not scale well with smaller screen sizes.
