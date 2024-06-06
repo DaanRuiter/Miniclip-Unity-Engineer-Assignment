@@ -13,7 +13,7 @@ The main entry point for this project is the Main class, where a game instance c
 This is done from the WackAMoleSceneWrapper which passes the game instance and some scene references. This means the core structure, apart from some standard UI and factory implementations, does not require Unity to function and could be called from different engines/frameworks.
 Calling the Init method on Main will initialize the games loop and state.
 The code is split into three parts: 
-- The core part which supports an abstract implementation of a small where the player can achieve a score.
+- The core part which supports an abstract implementation of a simple game where the player can achieve a score.
 - The common part that contains standard/common implementations of the core's interfaces that can be used by any game's implementation.
 - The Wack-A-Mole part that contains all the games specific implementations and logic.
 
